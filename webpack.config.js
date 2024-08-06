@@ -47,6 +47,7 @@ module.exports = {
       }
     ]
   },
+  devtool: 'source-map',
   plugins: [
     new ESLintPlugin({
       extensions: ['.js', '.jsx', '.ts', '.tsx']
@@ -90,5 +91,6 @@ module.exports = {
     compress: true,
     historyApiFallback: true,
     port: 4000
-  }
+   },
+  mode: 'development'
 };

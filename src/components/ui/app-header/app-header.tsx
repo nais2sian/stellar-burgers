@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styles from './app-header.module.css';
 import { TAppHeaderUIProps } from './type';
+import { Link } from 'react-router-dom'; 
 import {
   BurgerIcon,
   ListIcon,
@@ -25,10 +26,12 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
         <Logo className='' />
       </div>
       <div className={styles.link_position_last}>
-        <ProfileIcon type={'primary'} />
-        <p className='text text_type_main-default ml-2'>
-          {userName || 'Личный кабинет'}
-        </p>
+      {/* <Link to="/profile" className={styles.navLink}> Добавляем Link для кнопки "Личный кабинет" */}
+          <ProfileIcon type={'primary'} />
+          <p className='text text_type_main-default ml-2'>
+            {userName || 'Личный кабинет'}
+          </p>
+        {/* </Link> */}
       </div>
     </nav>
   </header>

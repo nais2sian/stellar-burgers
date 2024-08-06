@@ -7,6 +7,7 @@ export const Login: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log('опачки')
   };
 
   return (

@@ -2,6 +2,11 @@ import { FC, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useDispatch } from '../../services/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../services/store';
+
+
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
@@ -14,6 +19,25 @@ export const OrderInfo: FC = () => {
     updatedAt: 'string',
     number: 0
   };
+
+  // const dispatch = useDispatch();
+  // const ingredientData = useSelector((state: RootState) =>
+  //   state.ingredientsSlice.ingredients.find(
+  //     (item: TIngredient) => item._id === '643d69a5c3f7b9001cfa093c'
+  //   )
+  // );
+  // useEffect(() => {
+  //   dispatch(ingredientsThunk());
+  // }, [dispatch]);
+
+  
+
+
+
+
+
+
+
 
   const ingredients: TIngredient[] = [];
 
