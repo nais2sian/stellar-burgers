@@ -15,7 +15,7 @@ const initialState: TFeedsState = {
   total: 0,
   totalToday: 0,
   isLoading: true,
-  error: undefined,
+  error: undefined
 };
 
 export const getFeeds = createAsyncThunk('feed/getFeeds', getFeedsApi);
@@ -43,12 +43,12 @@ export const feedSlice = createSlice({
         state.isLoading = true;
         state.error = undefined;
       });
-  },
+  }
 });
 
-// Селекторы
-export const getOrdersFeeds = (state: { feed: TFeedsState }) => state.feed.orders;
+export const getOrdersFeeds = (state: { feed: TFeedsState }) =>
+  state.feed.orders;
 export const getTotalFeeds = (state: { feed: TFeedsState }) => state.feed.total;
-export const getTotalTodayFeeds = (state: { feed: TFeedsState }) => state.feed.totalToday;
-
+export const getTotalTodayFeeds = (state: { feed: TFeedsState }) =>
+  state.feed.totalToday;
 export default feedSlice.reducer;

@@ -18,7 +18,7 @@ export const allOrdersSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    listOfOrders: (state) => state.orders
+    ordersList: (state) => state.orders
   },
   extraReducers: (builder) => {
     builder
@@ -35,5 +35,4 @@ export const allOrdersSlice = createSlice({
   }
 });
 
-////поменять название лист 
-export const { listOfOrders } = allOrdersSlice.selectors;
+export const { ordersList } = allOrdersSlice.selectors;

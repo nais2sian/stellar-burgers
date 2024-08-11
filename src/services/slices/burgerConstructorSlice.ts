@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { TIngredient, TConstructorIngredient } from '../../utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { selectIngredients } from './ingredientsSlice';
 
 interface ConstructorState {
   bun: TIngredient | null;
@@ -50,7 +49,7 @@ export const burgerConstructorSlice = createSlice({
   }
 });
 
-// Экспорт действия и селекторов
-export const { addIngredient, removeIngredient, clearConstructor } = burgerConstructorSlice.actions;
+export const { addIngredient, removeIngredient, clearConstructor } =
+  burgerConstructorSlice.actions;
 export const selectIngredients = (state: ConstructorState) => state;
 export const burgerConstructorSelector = burgerConstructorSlice.selectors;

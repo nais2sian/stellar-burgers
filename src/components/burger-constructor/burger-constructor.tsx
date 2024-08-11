@@ -1,17 +1,16 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { BurgerConstructorUI } from '@ui';
-import { placeOrder } from '../../services/slices/orderSlice';
+import { placeOrder, resetOrderState } from '../../services/slices/orderSlice';
 import { useSelector, useDispatch } from '../../services/store';
 import { RootState } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
-import { clearConstructor, burgerConstructorSelector } from '../../services/slices/burgerConstructorSlice';
+import { clearConstructor } from '../../services/slices/burgerConstructorSlice';
 import { isAuthCheckedSelector } from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuth = useSelector(isAuthCheckedSelector);
-  //  const constructorItems = useSelector(burgerConstructorSelector.selectItems);
 
   const { bun, ingredients } = useSelector(
     (state: RootState) => state.burgerConstructor
@@ -32,24 +31,17 @@ export const BurgerConstructor: FC = () => {
     if (!isAuth) {
       return navigate('/login');
     }
-    if (!constructorItems.bun?. _id || orderRequest) return;
+    if (!constructorItems.bun?._id || orderRequest) return;
 
     const ingredientsIds = [
       constructorItems.bun._id,
       ...constructorItems.ingredients.map((ingredient) => ingredient._id),
       constructorItems.bun._id
     ];
-    // if (!constructorItems.bun._id || orderRequest) return;
 
-    // const ingredientsIds = [
-    //   constructorItems.bun._id,
-    //   ...constructorItems.ingredients.map((ingredient) => ingredient._id),
-    //   constructorItems.bun._id
-    // ];
     dispatch(placeOrder(ingredientsIds))
       .unwrap()
       .then((order) => {
-        navigate('/feed');
         console.log('Заказ успешно размещен, номер заказа:', order.number);
       })
       .catch((error) => {
@@ -58,10 +50,9 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    // dispatch(resetOrderState());
+    dispatch(resetOrderState());
     dispatch(clearConstructor());
     navigate('/');
-    console.log('аааааааааааааааааааааааааааааааааа');
   };
 
   const price = useMemo(() => {

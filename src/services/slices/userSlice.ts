@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loginUserApi, registerUserApi } from '../../utils/burger-api';
 import { TUser } from '../../utils/types';
 import {
@@ -95,11 +95,11 @@ export const userSlice = createSlice({
       .addCase(getUser.rejected, (state, action) => {
         state.isAuthChecked = false;
         state.loginUserError = action.error.message!;
-      })
-      builder.addCase(logout.fulfilled, (state) => {
-        state.isAuthChecked = false;
-        state.user = { email: '', name: '' };
       });
+    builder.addCase(logout.fulfilled, (state) => {
+      state.isAuthChecked = false;
+      state.user = { email: '', name: '' };
+    });
   },
   selectors: {
     isAuthCheckedSelector: (state) => state.isAuthChecked,

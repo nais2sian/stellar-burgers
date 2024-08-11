@@ -9,25 +9,16 @@ import {
   Profile,
   ProfileOrders
 } from '@pages';
-import { Provider } from 'react-redux';
-import store from '../../services/store';
 import '../../index.css';
 import styles from './app.module.css';
 import { Modal } from '../../components/modal';
 import { OrderInfo } from '../../components/order-info';
 import { IngredientDetails } from '../../components/ingredient-details';
 import { AppHeader } from '@components';
-import {  useEffect} from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
-  useLocation,
-  useNavigate
-} from 'react-router-dom';
-import { isAuthCheckedSelector, getUser  } from '../../services/slices/userSlice';
-import { useSelector, useDispatch } from '../../services/store';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { getUser } from '../../services/slices/userSlice';
+import { useDispatch } from '../../services/store';
 import { ingredientsThunk } from '../../services/slices/ingredientsSlice';
 import { ProtectedRoute } from '../../services/protected-route';
 

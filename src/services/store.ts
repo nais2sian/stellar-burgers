@@ -5,7 +5,7 @@ import { burgerConstructorSlice } from '../services/slices/burgerConstructorSlic
 import { orderSlice } from '../services/slices/orderSlice';
 import { authReducer } from '../services/slices/userSlice';
 import { feedSlice } from '../services/slices/feedSlice';
-import { getAllOrders, allOrdersSlice } from '../services/slices/allOrdersSlice';
+import { allOrdersSlice } from '../services/slices/allOrdersSlice';
 
 import {
   TypedUseSelectorHook,
