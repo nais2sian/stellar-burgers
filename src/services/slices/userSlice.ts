@@ -1,71 +1,114 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { TRegisterData, loginUserApi } from '../../utils/burger-api'; 
-import { TUser } from '../../utils/types'; 
+import { loginUserApi, registerUserApi } from '../../utils/burger-api';
+import { TUser } from '../../utils/types';
+import {
+  updateUserApi,
+  getUserApi,
+  logoutApi,
+  TRegisterData
+} from '../../utils/burger-api';
+import { setCookie } from '../../utils/cookie';
 
 type UserState = {
-  data: TUser | null;
-  isAuthenticated: boolean;
+  user: TUser | null;
   isAuthChecked: boolean;
-  loginUserRequest: boolean;
   loginUserError: string | null;
 };
 
 const initialState: UserState = {
-  data: null,
-  isAuthenticated: false,
+  user: {
+    email: '',
+    name: ''
+  },
   isAuthChecked: false,
-  loginUserRequest: false,
-  loginUserError: null,
+  loginUserError: null
 };
 
-// Создание асинхронного действия для входа пользователя
-export const loginUser = createAsyncThunk<
-  { user: TUser }, // Тип успешного результата
-  Omit<TRegisterData, 'name'>, // Тип аргументов
-  { rejectValue: string } // Тип ошибки
->(
+export const updateUser = createAsyncThunk('user/update', updateUserApi);
+export const getUser = createAsyncThunk('user/getuser', getUserApi);
+export const logout = createAsyncThunk('user/logout', logoutApi);
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  ({ email, name, password }: TRegisterData) =>
+    registerUserApi({ email, name, password }).then((res) => {
+      setCookie('accessToken', res.accessToken);
+      localStorage.setItem('refreshToken', res.refreshToken);
+      return res.user;
+    })
+);
+
+export const loginUser = createAsyncThunk(
   'user/loginUser',
-  async ({ email, password }, thunkAPI) => {
-    try {
-      const response = await loginUserApi({ email, password });
-      return response; // Предполагается, что ответ содержит user данные
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Ошибка при входе');
-    }
-  }
+  ({ email, password }: Omit<TRegisterData, 'name'>) =>
+    loginUserApi({ email, password }).then((res) => {
+      setCookie('accessToken', res.accessToken);
+      localStorage.setItem('refreshToken', res.refreshToken);
+      return res.user;
+    })
 );
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    logoutUser: (state) => {
-      state.data = null;
-      state.isAuthenticated = false;
-      state.isAuthChecked = true;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state) => {
-        state.loginUserRequest = true;
+      .addCase(registerUser.pending, (state) => {
         state.loginUserError = null;
       })
-      .addCase(loginUser.rejected, (state, action: PayloadAction<string | undefined>) => {
-        state.loginUserRequest = false;
-        state.loginUserError = action.payload || 'Неизвестная ошибка';
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loginUserError = action.error.message!;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuthChecked = true;
+        state.loginUserError = null;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loginUserError = null;
+        state.isAuthChecked = false;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loginUserError = action.error.message!;
+        state.isAuthChecked = false;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loginUserError = null;
         state.isAuthChecked = true;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<{ user: TUser }>) => {
-        state.data = action.payload.user;
-        state.loginUserRequest = false;
-        state.isAuthenticated = true;
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isAuthChecked = false;
+        state.loginUserError = action.error.message!;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
         state.isAuthChecked = true;
+        state.user = action.payload.user;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loginUserError = '';
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.isAuthChecked = true;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.isAuthChecked = false;
+        state.loginUserError = action.error.message!;
+      })
+      builder.addCase(logout.fulfilled, (state) => {
+        state.isAuthChecked = false;
+        state.user = { email: '', name: '' };
       });
   },
+  selectors: {
+    isAuthCheckedSelector: (state) => state.isAuthChecked,
+    getUser: (state) => state.user,
+    getName: (state) => (state.user ? state.user.name : null),
+    getError: (state) => state.loginUserError
+  }
 });
 
-// Экспорт действий и редюсера
-export const { logoutUser } = userSlice.actions;
 export const authReducer = userSlice.reducer;
-
+export const { isAuthCheckedSelector, getName, getError } = userSlice.selectors;
+export const selectUser = (state: { user: UserState }) => state.user.user;

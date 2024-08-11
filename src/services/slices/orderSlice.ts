@@ -1,41 +1,65 @@
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { orderBurgerApi } from '../../utils/burger-api'; // Импортируем API для заказа
+import { TOrder } from '../../utils/types'; // Importing the TOrder type
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface OrderState {
-  orderData: {
-    createdAt: string;
-    ingredients: string[];
-    _id: string;
-    status: string;
-    name: string;
-    updatedAt: string;
-    number: number;
-  } | null;
+// Defining the OrderState interface using TOrder for the order property
+type OrderState = {
+  order: TOrder | null;
   orderRequest: boolean;
-}
-
-const initialState: OrderState = {
-  orderData: null,
-  orderRequest: false,
+  orderError: string | null;
 };
 
+// Initial state setup for the order slice
+const initialState: OrderState = {
+  order: null,
+  orderRequest: false,
+  orderError: null
+};
+
+export const placeOrder = createAsyncThunk<
+  TOrder, // Return type of the Thunk
+  string[], // Argument type for Thunk (ingredients IDs)
+  { rejectValue: string } // Error type
+>('order/placeOrder', async (ingredientsIds, thunkAPI) => {
+  try {
+    const response = await orderBurgerApi(ingredientsIds);
+    return response.order; // Return the entire order object
+  } catch (error) {
+    return thunkAPI.rejectWithValue('Ошибка при отправке заказа');
+  }
+});
+
+// Redux slice for order
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    setOrderData: (state, action: PayloadAction<OrderState['orderData']>) => {
-      state.orderData = action.payload;
-      state.orderRequest = false;
-    },
-    startOrderRequest: (state) => {
-      state.orderRequest = true;
-    },
-    clearOrderData: (state) => {
-      state.orderData = null;
-    },
+    resetOrderState: (state) => {
+      state.order = null;
+      state.orderError = null;
+    }
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(placeOrder.pending, (state) => {
+        state.orderRequest = true;
+        state.orderError = null;
+      })
+      .addCase(placeOrder.fulfilled, (state, action: PayloadAction<TOrder>) => {
+        state.orderRequest = false;
+        state.order = action.payload; // Store the complete order object
+      })
+      .addCase(
+        placeOrder.rejected,
+        (state, action: PayloadAction<string | undefined>) => {
+          state.orderRequest = false;
+          state.orderError = action.payload || 'Неизвестная ошибка';
+        }
+      );
+  }
 });
 
-export const { setOrderData, startOrderRequest, clearOrderData } = orderSlice.actions;
+// Exporting the action creators and reducer
+export const { resetOrderState } = orderSlice.actions;
 
 export default orderSlice.reducer;

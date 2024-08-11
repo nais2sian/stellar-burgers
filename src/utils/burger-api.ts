@@ -79,7 +79,7 @@ export const getIngredientsApi = () =>
   fetch(`${URL}/ingredients`)
     .then((res) => checkResponse<TIngredientsResponse>(res))
     .then((data) => {
-      console.log('API Data:', data);
+      // console.log('API Data:', data);
       if (data?.success) return data.data;
       return Promise.reject(data);
     });
@@ -143,6 +143,7 @@ export type TRegisterData = {
 };
 
 type TAuthResponse = TServerResponse<{
+  success: boolean;
   refreshToken: string;
   accessToken: string;
   user: TUser;

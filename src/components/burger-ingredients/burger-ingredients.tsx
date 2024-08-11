@@ -1,16 +1,12 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
-import { ingredientsThunk } from '../../services/slices/ingredientsSlice';
 import { RootState } from '../../services/store';
-import { useDispatch } from '../../services/store';
 import { TIngredient } from '../../utils/types';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch();
-
   const { buns, mains, sauces } = useSelector((state: RootState) => ({
     buns: state.ingredients.ingredients.filter(
       (item: TIngredient) => item.type === 'bun'
@@ -22,10 +18,6 @@ export const BurgerIngredients: FC = () => {
       (item: TIngredient) => item.type === 'sauce'
     )
   }));
-
-  useEffect(() => {
-    dispatch(ingredientsThunk());
-  }, [dispatch]);
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
