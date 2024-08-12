@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { TIngredient, TConstructorIngredient } from '../../utils/types';
+import { TConstructorIngredient } from '../../utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ConstructorState {
-  bun: TIngredient | null;
-  ingredients: TIngredient[];
+  bun: TConstructorIngredient | null;
+  ingredients: TConstructorIngredient[];
 }
 
 const initialState: ConstructorState = {
@@ -24,7 +24,7 @@ export const burgerConstructorSlice = createSlice({
           state.ingredients.push(action.payload);
         }
       },
-      prepare: (ingredient: TIngredient) => {
+      prepare: (ingredient: TConstructorIngredient) => {
         const id = uuidv4();
         return {
           payload: {
@@ -34,14 +34,20 @@ export const burgerConstructorSlice = createSlice({
         };
       }
     },
-    removeIngredient: (state, action: PayloadAction<string>) => {
+    removeIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
       state.ingredients = state.ingredients.filter(
-        (ingredient) => ingredient._id !== action.payload
+        (item) => item.id !== action.payload.id
       );
     },
     clearConstructor: (state) => {
       state.bun = null;
       state.ingredients = [];
+    },
+    updateAll: (state, action: PayloadAction<TConstructorIngredient[]>) => {
+      state.ingredients = action.payload;
     }
   },
   selectors: {
@@ -49,7 +55,7 @@ export const burgerConstructorSlice = createSlice({
   }
 });
 
-export const { addIngredient, removeIngredient, clearConstructor } =
+export const { addIngredient, removeIngredient, clearConstructor, updateAll } =
   burgerConstructorSlice.actions;
 export const selectIngredients = (state: ConstructorState) => state;
 export const burgerConstructorSelector = burgerConstructorSlice.selectors;

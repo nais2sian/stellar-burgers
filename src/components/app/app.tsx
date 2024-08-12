@@ -20,7 +20,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { getUser } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
 import { ingredientsThunk } from '../../services/slices/ingredientsSlice';
-import { ProtectedRoute } from '../../services/protected-route';
+import { ProtectedRoute } from '../appProtectedRoute/protectedRoute';
 
 export const App = () => {
   const navigate = useNavigate();
