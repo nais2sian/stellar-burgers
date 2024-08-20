@@ -15,7 +15,7 @@ type UserState = {
   loginUserError: string | null;
 };
 
-const initialState: UserState = {
+export const initialState: UserState = {
   user: {
     email: '',
     name: ''
