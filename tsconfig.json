@@ -9,8 +9,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "commonjs",
-    // "module": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -29,6 +28,39 @@
       "@selectors": ["src/services/selectors"]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }
+
+// {
+//   "compilerOptions": {
+//     "target": "es5",
+//     "lib": ["dom", "dom.iterable", "esnext"],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+//     "strict": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "noFallthroughCasesInSwitch": true,
+//     "module": "commonjs",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "noEmit": true,
+//     "jsx": "react-jsx",
+//     "types": ["cypress", "node"],
+//     "baseUrl": ".",
+//     "paths": {
+//       "@pages": ["src/pages"],
+//       "@components": ["src/components"],
+//       "@ui": ["src/components/ui"],
+//       "@ui-pages": ["src/components/ui/pages"],
+//       "@utils-types": ["src/utils/types"],
+//       "@api": ["src/utils/burger-api.ts"],
+//       "@slices": ["src/services/slices"],
+//       "@selectors": ["src/services/selectors"]
+//     }
+//   },
+//   "include": ["src", "cypress"],
+//   "exclude": ["node_modules"]
+// }
