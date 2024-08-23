@@ -1,5 +1,4 @@
 const bunName = 'Краторная булка N-200i';
-export default bunName;
 
 describe('Открытие и закрытие модального окна с описанием ингредиента', () => {
   beforeEach(() => {

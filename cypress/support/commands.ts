@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+const details = 'Детали ингредиента';
+
 Cypress.Commands.add(
   'addIngredientToConstructor',
   (dataCySelector, itemName) => {
@@ -46,16 +48,16 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('openIngredientModal', (ingredientName) => {
   cy.contains(ingredientName).click({ force: true });
-  cy.contains('Детали ингредиента').should('exist');
+  cy.contains(details).should('exist');
   cy.get('[data-cy=modal]').contains(ingredientName).should('exist');
 });
 
 Cypress.Commands.add('closeModalWithButton', () => {
   cy.get('[data-cy=close-modal]').should('exist').click();
-  cy.contains('Детали ингредиента').should('not.exist');
+  cy.contains(details).should('not.exist');
 });
 
 Cypress.Commands.add('closeModalWithOverlay', () => {
   cy.get('[data-cy=overlay]').click('right', { force: true });
-  cy.contains('Детали ингредиента').should('not.exist');
+  cy.contains(details).should('not.exist');
 });
