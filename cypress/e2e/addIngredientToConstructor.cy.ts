@@ -1,16 +1,17 @@
+const mainIngredientName = 'Биокотлета из марсианской Магнолии';
+const sauceName = 'Соус с шипами Антарианского плоскоходца';
+
 describe('Апи и добавление ингредиентов в конструктор', () => {
   beforeEach(() => {
-    cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', {
+    cy.intercept('GET', 'api/ingredients', {
       fixture: 'ingredients.json'
     }).as('getIngredients');
     cy.visit('/');
-    cy.wait('@getIngredients'); 
+    cy.wait('@getIngredients');
   });
 
   it('добавляем булки в конструктор по клику', () => {
-    cy.get('[data-cy=bun-ingredient]')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.addItemToOrder('bun');
     cy.get('[data-cy=bun-top]')
       .contains('Краторная булка N-200i')
       .should('exist');
@@ -20,16 +21,7 @@ describe('Апи и добавление ингредиентов в конст�
   });
 
   it('добавляем начинку в конструктор по клику', () => {
-    cy.get('[data-cy=main-ingredient]').contains('Добавить').click();
-    cy.get('[data-cy=sauce-ingredient]').contains('Добавить').click({ force: true });    
-    cy.get('[data-cy=constructor-ingredients]')
-      .contains('Биокотлета из марсианской Магнолии')
-      .should('exist');
-    cy.get('[data-cy=constructor-ingredients]')
-      .contains('Соус с шипами Антарианского плоскоходца')
-      .should('exist');
+    cy.addIngredientToConstructor('main-ingredient', mainIngredientName);
+    cy.addIngredientToConstructor('sauce-ingredient', sauceName);
   });
 });
-
-
-

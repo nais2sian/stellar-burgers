@@ -1,3 +1,6 @@
+const burgerConstructor = '[data-cy=burger-constructor]';
+const bunId = '643d69a5c3f7b9001cfa093c';
+
 describe('Создание заказа', () => {
   beforeEach(() => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
@@ -17,45 +20,26 @@ describe('Создание заказа', () => {
   });
 
   it('Создание заказа', () => {
-    cy.get('[data-cy=bun-ingredient]')
-      .contains('Добавить')
-      .click({ force: true });
-    cy.get('[data-cy=main-ingredient')
-      .contains('Добавить')
-      .click({ force: true });
-    cy.get('[data-cy=sauce-ingredient')
-      .contains('Добавить')
-      .click({ force: true });
-    cy.get('[data-cy=order-button').click({ force: true });
+    cy.addItemToOrder('bun');
+    cy.addItemToOrder('main');
+    cy.addItemToOrder('sauce');
 
-    cy.wait('@postOrder')
-      .its('request.body')
-      .should('deep.equal', {
-        ingredients: [
-          '643d69a5c3f7b9001cfa093c',
-          '643d69a5c3f7b9001cfa0941',
-          '643d69a5c3f7b9001cfa0945',
-          '643d69a5c3f7b9001cfa093c'
-        ]
-      });
+    cy.placeOrder();
 
-    cy.get('[data-cy=order-number]').contains('50421').should('exist');
-    cy.get('[data-cy=close-modal]').click();
-    cy.get('[data-cy=order-number]').should('not.exist');
+    cy.checkOrderDetails([
+      bunId,
+      '643d69a5c3f7b9001cfa0941',
+      '643d69a5c3f7b9001cfa0945',
+      bunId
+    ]);
 
-    cy.get('[data-cy=burger-constructor]')
-      .contains('643d69a5c3f7b9001cfa093c')
-      .should('not.exist');
+    cy.closeOrderModal();
 
-    cy.get('[data-cy=burger-constructor]')
-      .contains('643d69a5c3f7b9001cfa0941')
-      .should('not.exist');
-
-    cy.get('[data-cy=burger-constructor]')
-      .contains('643d69a5c3f7b9001cfa0945')
-      .should('not.exist');
-    cy.get('[data-cy=burger-constructor]')
-      .contains('643d69a5c3f7b9001cfa093c')
-      .should('not.exist');
+    cy.checkIngredientsNotExist(burgerConstructor, [
+      bunId,
+      '643d69a5c3f7b9001cfa0941',
+      '643d69a5c3f7b9001cfa0945',
+      bunId
+    ]);
   });
 });
