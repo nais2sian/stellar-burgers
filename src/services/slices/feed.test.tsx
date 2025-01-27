@@ -12,7 +12,7 @@ describe('feedSlice reducer', () => {
     const mockPayload = {
       orders: [{ id: '1', name: 'Order 1' }],
       total: 100,
-      totalToday: 10,
+      totalToday: 10
     };
     const action = { type: getFeeds.fulfilled.type, payload: mockPayload };
     const state = feedReducer(initialState, action);
@@ -27,7 +27,7 @@ describe('feedSlice reducer', () => {
   test('должен обработать getFeeds.rejected', () => {
     const action = {
       type: getFeeds.rejected.type,
-      error: { message: 'Something went wrong' },
+      error: { message: 'Something went wrong' }
     };
     const state = feedReducer(initialState, action);
 

@@ -24,6 +24,7 @@ export const BurgerConstructor: FC = () => {
   const orderRequest = useSelector(
     (state: RootState) => state.order.orderRequest
   );
+
   const orderData = useSelector((state: RootState) => state.order.order);
 
   const onOrderClick = () => {
@@ -52,7 +53,7 @@ export const BurgerConstructor: FC = () => {
   const closeOrderModal = () => {
     dispatch(resetOrderState());
     dispatch(clearConstructor());
-    navigate('/');
+    // navigate('/');
   };
 
   const price = useMemo(() => {

@@ -6,11 +6,9 @@ import {
 } from './burgerConstructorSlice';
 import { TConstructorIngredient } from '../../utils/types';
 
-jest.mock('uuid', () => {
-  return {
-    v4: () => 'test-uuid'
-  };
-});
+jest.mock('uuid', () => ({
+  v4: () => 'test-uuid'
+}));
 describe('burgerConstructorSlice', () => {
   test('заменяем булочки', () => {
     let state: ConstructorState = {

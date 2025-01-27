@@ -1,4 +1,9 @@
-import { orderSlice, placeOrder, resetOrderState, initialState } from './orderSlice';
+import {
+  orderSlice,
+  placeOrder,
+  resetOrderState,
+  initialState
+} from './orderSlice';
 import { TOrder } from '../../utils/types';
 
 describe('orderSlice reducer', () => {
@@ -30,7 +35,7 @@ describe('orderSlice reducer', () => {
   test('должен обработать placeOrder.rejected', () => {
     const action = {
       type: placeOrder.rejected.type,
-      payload: 'Ошибка при отправке заказа',
+      payload: 'Ошибка при отправке заказа'
     };
     const state = orderSlice.reducer(initialState, action);
 

@@ -10,7 +10,7 @@ describe('allOrdersSlice', () => {
   test('должен обработать getAllOrders.fulfilled', () => {
     const mockOrders = [
       { id: 1, name: 'Order 1' },
-      { id: 2, name: 'Order 2' },
+      { id: 2, name: 'Order 2' }
     ];
     const action = { type: getAllOrders.fulfilled.type, payload: mockOrders };
     const state = allOrdersSlice.reducer(initialState, action);
