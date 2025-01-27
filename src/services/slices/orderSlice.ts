@@ -8,7 +8,7 @@ type OrderState = {
   orderError: string | null;
 };
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   order: null,
   orderRequest: false,
   orderError: null
@@ -45,6 +45,7 @@ export const orderSlice = createSlice({
       .addCase(placeOrder.fulfilled, (state, action: PayloadAction<TOrder>) => {
         state.orderRequest = false;
         state.order = action.payload;
+        console.log(state.order);
       })
       .addCase(
         placeOrder.rejected,

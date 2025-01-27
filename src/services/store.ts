@@ -19,7 +19,7 @@ export const orderReducer = orderSlice.reducer;
 export const ordersReducer = feedSlice.reducer;
 export const allOrdersReducer = allOrdersSlice.reducer;
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   burgerConstructor: burgerConstructorReducer,
   order: orderReducer,
@@ -34,6 +34,7 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
+
 export type AppDispatch = typeof store.dispatch;
 export const useDispatch: () => AppDispatch = () => dispatchHook();
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;

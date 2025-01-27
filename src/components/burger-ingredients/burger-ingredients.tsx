@@ -7,6 +7,7 @@ import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 
 export const BurgerIngredients: FC = () => {
+  /// деструктуризация
   const { buns, mains, sauces } = useSelector((state: RootState) => ({
     buns: state.ingredients.ingredients.filter(
       (item: TIngredient) => item.type === 'bun'
